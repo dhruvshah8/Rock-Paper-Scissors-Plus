@@ -1,0 +1,307 @@
+//Dhruv Shah
+//Rock paper Scicors Spock Lizard Game
+// 597327
+
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.applet.Applet;
+
+
+public class rockPaperScissors5 extends Applet implements ActionListener {
+  
+  
+  JRadioButton rockB;
+  JRadioButton paperB;
+  JRadioButton scissorsB;
+  JRadioButton lizardB;
+  JRadioButton spockB;
+  JLabel status;
+  String playerC;
+  String computerC;
+  double random;
+  JLabel pic1;
+  JLabel pic2;
+  JLabel score;
+  JLabel scoreC;
+  int scoreNum;
+  int scoreNumC;
+  
+  
+  public void init () {
+    this.setLayout(null);
+    
+    
+    
+    JLabel title = new JLabel("Rock, Paper, Scissors Game");
+    title.setBackground(new Color(0, 200, 250));
+    title.setBounds(10, -15, 500, 80);
+    title.setFont(new Font("", Font.PLAIN, 30));
+    title.setForeground(Color.BLUE);
+    
+    
+    rockB = new JRadioButton("Rock");
+    rockB.setActionCommand ("rock");
+    
+    paperB = new JRadioButton("Paper");
+    paperB.setActionCommand ("paper");
+    
+    scissorsB = new JRadioButton("Scissors");
+    scissorsB.setActionCommand ("scissor");
+    
+    lizardB = new JRadioButton ("Lizard");
+    lizardB.setActionCommand ("lizard");
+    
+    spockB = new JRadioButton ("Spock");
+    spockB.setActionCommand ("spock");
+    
+    
+    //the location of the Buttons
+    rockB.setBounds(20, 120, 150, 25);
+    paperB.setBounds(20, 160, 150, 25);
+    scissorsB.setBounds(20, 200, 150, 25);
+    spockB.setBounds(20, 280, 150, 25);
+    lizardB.setBounds(20, 240, 150, 25);
+    
+    
+    //labels for puic
+    JLabel pickOne = new JLabel("Pick One:");
+    pickOne.setBounds(15, 100, 100, 10);
+    JLabel yourChoice = new JLabel("Your Choice:");
+    yourChoice.setBounds(175, 100, 100, 10);
+    JLabel computersChoice = new JLabel("Computer's Choice:");
+    computersChoice.setBounds(330, 100, 170, 10);
+    JLabel yourScore = new JLabel("Your Score:");
+    yourScore.setBounds(17, 70, 75, 10);
+    JLabel computersScore = new JLabel("Computer's Score:");
+    computersScore.setBounds(208, 70, 120, 10);
+    status = new JLabel("");
+    status.setBounds(220, 281, 80, 10);
+    score = new JLabel("0");
+    score.setBounds(100, 70, 70, 10);
+    scoreC = new JLabel("0");
+    scoreC.setBounds(330, 70, 70, 10);
+    
+    //Creates JLabels which are set as icons to display user choice
+    pic1 = new JLabel (createImageIcon ("grey.jpg"));
+    pic1.setBounds(170, 120, 130, 150);
+    pic2 = new JLabel (createImageIcon ("grey.jpg"));
+    pic2.setBounds(315, 121, 130, 150);
+    
+    
+    
+    JButton playB = new JButton("Play");
+    playB.setBounds(10, 350, 75, 40);
+    playB.setActionCommand ("play");
+    playB.addActionListener (this);
+    JButton resetB = new JButton("Reset Scores");
+    resetB.setBounds(110, 350, 100, 40);
+    resetB.setActionCommand ("reset");
+    resetB.addActionListener (this);
+    
+    
+    
+    add(title);
+    add (rockB);
+    add (paperB);
+    add (scissorsB);
+    add(lizardB);
+    add(spockB);
+    add (playB);
+    add (resetB);
+    add (pickOne);
+    add (yourChoice);
+    add (computersChoice);
+    add (status);
+    add (yourScore);
+    add (computersScore);
+    add (score);
+    add (scoreC);
+    add (pic1);
+    add (pic2);
+  }
+  
+  
+  public void actionPerformed (ActionEvent e) {
+    
+    if (e.getActionCommand ().equals ("reset")) {
+      
+      scoreNum = 0;  //players score back to 0
+      scoreNumC = 0; //computer's score back to 0
+      
+      pic1.setIcon(createImageIcon ("grey.gif"));
+      pic2.setIcon(createImageIcon ("grey.gif"));
+      
+      //sets each score to 0
+      score.setText("0"); 
+      scoreC.setText("0");
+      status.setText("");
+    }
+    
+    //if user clicks play
+    if (e.getActionCommand ().equals ("play")) {
+      
+      //sets the image to appropriate image and gives var playerC a value of what they selected 
+      if (rockB.isSelected() == true) {
+        playerC = "rock";
+        pic1.setIcon(createImageIcon ("rock.jpg"));
+      } else if (paperB.isSelected() == true) {
+        playerC = "paper";
+        pic1.setIcon(createImageIcon ("paper.jpg"));
+      } else {
+        playerC = "scissors";
+        pic1.setIcon(createImageIcon ("scissors.jpg")); 
+      }
+      
+      
+      random = Math.random();
+      
+      //if the num is less then 0.2 it is rock
+      if (random < 0.2) {
+        computerC = "rock";
+        pic2.setIcon(createImageIcon ("rock.jpg"));
+        
+        //is it is less the 0.4
+      } else if (random < 0.4) {
+        computerC = "paper";
+        pic2.setIcon(createImageIcon ("paper.jpg"));
+      } 
+      else if (random < 0.6) {      
+        
+        computerC = "scissors";
+        pic2.setIcon(createImageIcon ("scissors.png"));
+      }
+      
+      else if (random < 0.8) {      
+        
+        computerC = "lizard";
+        pic2.setIcon(createImageIcon ("lizard.jpg"));
+      }
+      else {      
+        
+        computerC = "spock";
+        pic2.setIcon(createImageIcon ("spock.jpg"));
+      }
+      
+      //compares and set status 
+      status.setText(run(playerC, computerC));
+      
+      //If the player has won, then their score is increased by one
+      if (status.getText() == "You win!!!") {
+        
+        scoreNum++;
+        score.setText(Integer.toString(scoreNum));
+        
+        //If the player has lost, then the computer's score is increased by one
+      } else if (status.getText() == "You lose!!!") {
+        
+        scoreNumC ++;
+        scoreC.setText(Integer.toString(scoreNumC));
+      }
+    }
+  }
+  
+  
+  //finds who wins 
+  public String run (String choice1, String choice2) {
+    
+    
+   if (p1Choice == altChoice) {
+      return "It's a tie!!!";
+      
+      //Paper beats rock
+    } else if ((p1Choice == "rock") && (altChoice == "paper")) {
+      return "You lose!!!";
+      
+      //Rock beats paper
+    } else if ((p1Choice == "rock") && (altChoice == "scissors")) {
+      return "You win!!!";
+      
+      //Paper beats rock
+    } else if ((p1Choice == "paper") && (altChoice == "rock")) {
+      return "You win!!!";
+      
+      //Scissors beats paper
+    } else if ((p1Choice == "paper") && (altChoice == "scissors")) {
+      return "You lose!!!";
+      
+      //Scissors beats paper
+    } else if ((p1Choice == "scissors") && (altChoice == "paper")) {
+      return "You win!!!";
+      
+      //Rock beats scissors
+    } else if ((p1Choice == "scissors") && (altChoice == "rock")){
+      return "You lose!!!";
+      
+      //Rock beats lizard
+    } else if ((p1Choice == "rock") && (altChoice == "lizard")){
+      return "You win!!!";
+      
+      //Rock beats lizard
+    } else if ((p1Choice == "lizard") && (altChoice == "rock")){
+      return "You lose!!!";
+      
+      //Spock beats rock
+    } else if ((p1Choice == "spock") && (altChoice == "rock")){
+      return "You win!!!";
+      
+      //Spock beats rock
+    } else if ((p1Choice == "rock") && (altChoice == "spock")){
+      return "You lose!!!";
+      
+      //Paper beats spock
+    } else if ((p1Choice == "paper") && (altChoice == "spock")){
+      return "You win!!!";
+      
+      //Paper beats spock
+    } else if ((p1Choice == "spock") && (altChoice == "paper")){
+      return "You lose!!!";
+      
+      //Lizard beats paper
+    } else if ((p1Choice == "lizard") && (altChoice == "paper")){
+      return "You win!!!";
+      
+      //Lizard beats paper
+    } else if ((p1Choice == "paper") && (altChoice == "lizard")){
+      return "You lose!!!";
+      
+      //Scissors beats lizard
+    } else if ((p1Choice == "scissors") && (altChoice == "lizard")){
+      return "You win!!!";
+      
+      //Scissors beats lizard
+    } else if ((p1Choice == "lizard") && (altChoice == "scissors")){
+      return "You lose!!!";
+      
+      //Spock beats scissors
+    } else if ((p1Choice == "spock") && (altChoice == "scissors")){
+      return "You win!!!";
+      
+      //Spock beats scissors
+    } else if ((p1Choice == "scissors") && (altChoice == "spock")){
+      return "You lose!!!";
+      
+      //lizard beats spock
+    } else if ((p1Choice == "lizard") && (altChoice == "spock")){
+      return "You win!!!";
+      
+      //lizard beats spock
+    } else {
+      return "You lose!!!";
+    }
+  }
+  
+  //picture to JLabel method 
+  protected static ImageIcon createImageIcon (String path) {
+    java.net.URL imgURL = rockPaperScissors5.class.getResource (path);
+    if (imgURL != null) {
+      return new ImageIcon (imgURL);
+    } else {
+      System.err.println ("Couldn’t find file: " + path);
+      return null;
+    }
+  }
+  
+  
+}
